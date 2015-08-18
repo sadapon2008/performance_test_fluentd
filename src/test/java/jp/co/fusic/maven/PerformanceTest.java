@@ -65,9 +65,14 @@ public class PerformanceTest extends TestCase
             JavascriptExecutor js = (JavascriptExecutor) driver;
             Long loadEventEnd = (Long) js.executeScript("return window.performance.timing.loadEventEnd;");
             Long navigationStart = (Long) js.executeScript("return window.performance.timing.navigationStart;");
+            Long domContentLoadedEventEnd = (Long) js.executeScript("return window.performance.timing.domContentLoadedEventEnd;");
             Long pageLoadTime = loadEventEnd-navigationStart;
+            Long domLoadTime = domContentLoadedEventEnd-navigationStart;
+            Long fromDomLoadToPageLoad = pageLoadTime-domLoadTime;
             Map<String, Object> data = new HashMap<String, Object>();
             data.put("page_load_time", pageLoadTime);
+            data.put("dom_load_time", domLoadTime);
+            data.put("from_dom_load_to_page_load", fromDomLoadToPageLoad);
             logger.log(fluentd_tag + ".test", data);
         }
         finally
